@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>工厂审批页面</title>
+		<link rel="stylesheet" href="../css/layui.css">
+		<script src="../layui.js"></script>
+	</head>
+	<body style="padding-right: 120px;padding-left: 120px;background-color: whitesmoke">
+
+		<!-- 内容主体区域 -->
+		<div style="padding: 15px;padding-right: 15px">
+			<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+				<legend>工厂信息详情</legend>
+				<hr class="layui-border-orange">
+			</fieldset>
+		</div>
+
+		<fieldset class="layui-elem-field  layui-border-blue" id="newField">
+			<legend>待注册工厂信息</legend>
+			<div class="layui-field-boxS">
+				<form class="layui-form" style="color: #0C0C0C" id="facMsg">
+					<div class="layui-form-item" align="center">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">工厂名称</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="facMsgInfo.name" disabled>
+							</div>
+						</div>
+
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">工厂法人姓名</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="facMsgInfo.factory_lpname"
+									disabled>
+							</div>
+						</div>
+
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">工厂法人身份证号码</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="facMsgInfo.factory_lpcardnum"
+									disabled>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="layui-form-item" align="center">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">工厂地址</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="facMsgInfo.factory_address"
+									disabled>
+							</div>
+						</div>
+
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">工厂经度</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="facMsgInfo.factory_longitude"
+									disabled>
+							</div>
+						</div>
+
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">工厂纬度</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="facMsgInfo.factory_latitude"
+									disabled>
+							</div>
+						</div>
+					</div>
+
+					<div class="layui-form-item" align="center">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 130px">法人身份证照片（正）：</label>
+							<img width="200px" height="200px" src="../photo/defaut.png" id="factory_lpcardphoto1">
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 130px">法人身份证照片（反）：</label>
+							<img src="../photo/defaut.png" width="200px" height="200px" id="factory_lpcardphoto2">
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 130px">工厂营业资格证：</label>
+							<img src="../photo/defaut.png" width="200px" height="200px" id="factory_licencephoto">
+						</div>
+					</div>
+
+					<div class="layui-form-item layui-col-lg-offset3">
+						<div class="layui-input-block" style="padding-left: 250px;">
+							<button type="button" class="layui-btn layui-btn-warm" id="LAY_layedit_code_submit"
+								v-on:click="newFacPass(facMsgInfo.id)">通过</button>
+							<button type="button" class="layui-btn layui-btn-primary"
+								v-on:click="newFacRefuse(facMsgInfo.id)">不通过</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</fieldset>
+
+
+
+
+        <fieldset class="layui-elem-field  layui-border-blue" id="editField">
+            <legend>待修改工厂信息</legend>
+            <div class="layui-field-boxS">
+                <form class="layui-form" style="color: #0C0C0C" id="facMsg2">
+                    <div class="layui-form-item" align="center">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 120px">工厂名称</label>
+                            <div class="layui-inline">
+                                <input type="text" class="layui-input" v-bind:value="facMsgInfo.name" disabled>
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 120px">工厂法人姓名</label>
+                            <div class="layui-inline">
+                                <input type="text" class="layui-input" v-bind:value="facMsgInfo.factory_lpname"
+                                       disabled>
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 120px">工厂法人身份证号码</label>
+                            <div class="layui-inline">
+                                <input type="text" class="layui-input" v-bind:value="facMsgInfo.factory_lpcardnum"
+                                       disabled>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="layui-form-item" align="center">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 120px">工厂地址</label>
+                            <div class="layui-inline">
+                                <input type="text" class="layui-input" v-bind:value="facMsgInfo.factory_address"
+                                       disabled>
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 120px">工厂经度</label>
+                            <div class="layui-inline">
+                                <input type="text" class="layui-input" v-bind:value="facMsgInfo.factory_longitude"
+                                       disabled>
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 120px">工厂纬度</label>
+                            <div class="layui-inline">
+                                <input type="text" class="layui-input" v-bind:value="facMsgInfo.factory_latitude"
+                                       disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item" align="center">
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 130px">法人身份证照片（正）：</label>
+                            <img width="200px" height="200px" src="../photo/defaut.png" id="factory_lpcardphoto1_edit">
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 130px">法人身份证照片（反）：</label>
+                            <img src="../photo/defaut.png" width="200px" height="200px" id="factory_lpcardphoto2_edit">
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label" style="width: 130px">工厂营业资格证：</label>
+                            <img src="../photo/defaut.png" width="200px" height="200px" id="factory_licencephoto_edit">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-col-lg-offset3">
+                        <div class="layui-input-block" style="padding-left: 250px;">
+                            <button type="button" class="layui-btn layui-btn-warm" id="LAY_layedit_code_submit_edit"  v-on:click="editFacPass(facMsgInfo.factory_id)">通过</button>
+                            <button type="button" class="layui-btn layui-btn-primary" v-on:click="editFacRefuse(facMsgInfo.factory_id)">不通过</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </fieldset>
+
+
+
+	</body>
+</html>
+<script src="../js/PageJump.js"></script>
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script>
+	var params = paramsReady();
+	var fac_id = params.fac_id;
+    var if_new = params.if_new;
+
+    layui.use('layer',function () {
+        var layer = layui.layer;
+    })
+
+	console.log(fac_id);
+	if (if_new === "true"){
+	    document.getElementById("editField").style.display = "none";
+        dataReady_new(fac_id);
+    }else {
+        document.getElementById("newField").style.display = "none";
+        dataReady_edit(fac_id);
+    }
+
+    /**
+     * 新工厂申请信息
+     * @param fac_id 工厂id
+     */
+	function dataReady_new(fac_id) {
+		new Vue({
+			el: '#facMsg',
+			data() {
+				return {
+					facMsgInfo: null,
+				}
+			},
+			mounted() {
+				axios.post('http://localhost:8081/getFacMsg', 'fac_id=' + fac_id)
+					.then(response => (this.facMsgInfo = response['data']))
+					.catch(function(error) {
+						alert("获得工厂信息出错");
+					});
+			},
+			watch: {
+				facMsgInfo: function() {
+					this.$nextTick(function() {
+						document.getElementById('factory_lpcardphoto1').src =
+							"http://localhost:8081/static/" + this.facMsgInfo.factory_lpcardphoto1;
+						document.getElementById('factory_lpcardphoto2').src =
+							"http://localhost:8081/static/" + this.facMsgInfo.factory_lpcardphoto2;
+						document.getElementById('factory_licencephoto').src =
+							"http://localhost:8081/static/" + this.facMsgInfo.factory_licencephoto;
+					});
+				}
+			},
+		});
+	}
+
+    /**
+     * 工厂申请修改信息
+     * @param fac_id 工厂id
+     */
+    function dataReady_edit(fac_id) {
+        new Vue({
+            el: '#facMsg2',
+            data() {
+                return {
+                    facMsgInfo: null,
+                }
+            },
+            mounted() {
+                axios.post('http://localhost:8081/getFacQuaByFacId', 'fac_id=' + fac_id)
+                    .then(response => (this.facMsgInfo = response['data']))
+                    .catch(function(error) {
+                        alert("获得工厂信息出错");
+                    });
+            },
+            watch: {
+                facMsgInfo: function() {
+                    this.$nextTick(function() {
+                        document.getElementById('factory_lpcardphoto1_edit').src =
+                            "http://localhost:8081/static/" + this.facMsgInfo.factory_lpcardphoto1;
+                        document.getElementById('factory_lpcardphoto2_edit').src =
+                            "http://localhost:8081/static/" + this.facMsgInfo.factory_lpcardphoto2;
+                        document.getElementById('factory_licencephoto_edit').src =
+                            "http://localhost:8081/static/" + this.facMsgInfo.factory_licencephoto;
+                    });
+                }
+            },
+        });
+    }
+
+    /**
+     * 同意新工厂申请
+     * @param fac_id
+     */
+	function newFacPass(fac_id) {
+	    console.log(fac_id);
+
+	    layer.confirm("是否确认通过",function (index) {
+            $.ajax({
+                url: "http://localhost:8081/passNewFacInfo",
+                type: 'post',
+                data: {
+                    'fac_id':fac_id,
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data == 1) {
+                        layer.msg("通过申请成功!");
+                    } else {
+                        layer.msg("通过申请失败!");
+                    }
+                },
+                error: function(error) {
+                    layer.msg('"通过申请出错，请稍后再试！');
+                }
+            });
+
+            layer.close(index);
+
+        });
+
+
+
+	}
+
+    /**
+     * 拒绝新工厂申请
+     * @param fac_id
+     */
+	function newFacRefuse(fac_id) {
+        console.log(fac_id);
+
+        layer.confirm("是否确认不通过",function (index) {
+            $.ajax({
+                url: "http://localhost:8081/refuseNewFacInfo",
+                type: 'post',
+                data: {
+                    'fac_id':fac_id,
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data == 1) {
+                        layer.msg("拒绝申请成功!");
+                    } else {
+                        layer.msg("拒绝申请失败!");
+                    }
+                },
+                error: function(error) {
+                    layer.msg('"拒绝申请出错，请稍后再试！');
+                }
+            });
+
+            layer.close(index);
+        });
+
+
+	}
+
+    /**
+     * 同意工厂信息修改申请
+     * @param fac_id
+     */
+	function editFacPass(fac_id) {
+        layer.confirm("是否确认通过",function (index){
+            layer.msg(fac_id);
+            $.ajax({
+                url:"http://localhost:8081/passEditFacInfo",
+                type:'post',
+                data:{
+                    'fac_id':fac_id,
+                },
+                success:function (data) {
+                    console.log(data);
+                    if (data == 1){
+                        layer.msg("修改申请同意成功!");
+                    }else {
+                        layer.msg("修改申请同意失败!");
+                    }
+                },
+                error:function (error) {
+                    layer.msg('"修改申请同意出错，请稍后再试！');
+                }
+            });
+          layer.close(index);
+        })
+    }
+
+    /**
+     * 拒绝工厂信息修改申请
+     * @param fac_id
+     */
+    function editFacRefuse(fac_id) {
+        layer.confirm("是否确认不通过",function (index){
+            layer.close(index);
+
+            //进行confirm，编写拒绝理由
+            layer.prompt({
+                formType: 2,
+                value: '请输入拒绝理由',
+                title: '请输入值',
+                area: ['800px', '350px'] //自定义文本域宽高
+            }, function(value, index, elem){
+                refuseReason = value; //得到value【拒绝理由】
+                layer.close(index);
+                $.ajax({
+                    url:"http://localhost:8081/refuseEditFacInfo",
+                    type:'post',
+                    data:{
+                        'fac_id':fac_id,
+                        'refuseReason':refuseReason,
+                    },
+                    success:function (data) {
+                        console.log(data);
+                        if (data == 1){
+                            layer.msg("修改申请拒绝成功!");
+                        }else {
+                            if (data === -1){
+                                layer.msg("修改过程中有小小错误，请稍后重试")
+                            }else{
+                                layer.msg("修改申请拒绝失败!");
+                            }
+                        }
+                    },
+                    error:function (error) {
+                        layer.msg('"修改申请拒绝出错，请稍后再试！');
+                    }
+                });
+            });
+
+
+        })
+    }
+
+</script>

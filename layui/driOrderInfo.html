@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <title>司机订单详情</title>
+        <link href="css/layui.css" rel="stylesheet">
+        <script src="layui.js"></script>
+    </head>
+</head>
+<body  style="padding-right: 120px;padding-left: 120px;background-color: whitesmoke">
+<div style="padding: 15px;padding-right: 15px">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>订单详情</legend>
+        <hr class="layui-border-orange">
+    </fieldset>
+</div>
+
+<fieldset class="layui-elem-field  layui-border-blue">
+    <legend>订单当前情况</legend>
+    <div class="layui-field-boxS" id="driOrderInfo">
+        <form class="layui-form" style="color: #0C0C0C">
+            <div class="layui-form-item" align="center">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">卖家工厂</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.ffName" disabled>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">买家工厂</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.ftName" disabled>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">司机姓名</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.d_name" disabled>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="layui-form-item" align="center">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">到达装货工厂时间</label>
+                    <div class="layui-inline">
+                        <input type="datetime" class="layui-input"  v-bind:value="driOrderInfo.driOrderInfo.order_arriveffactorydate.slice(0,16)" disabled>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">离开装货工厂时间</label>
+                    <div class="layui-inline">
+                        <input type="datetime" class="layui-input"  v-bind:value="driOrderInfo.driOrderInfo.order_leaveffactorydate.slice(0,16)" disabled>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">到达送货工厂时间</label>
+                    <div class="layui-inline">
+                        <input type="datetime" class="layui-input"  v-bind:value="driOrderInfo.driOrderInfo.order_enddate.slice(0,16)" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item" align="center">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">到厂空车称重员工姓名</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.staffName1" disabled>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">离厂满车称重员工姓名</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.staffName2" disabled>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">到厂满车称重员工姓名</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.staffName3" disabled>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item" align="center">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">皮重</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.driOrderInfo.order_pz" disabled>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">离厂毛重</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.driOrderInfo.order_mz" disabled>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">到厂毛重</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.driOrderInfo.order_mz2" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item" align="center">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">运费单价（￥/吨）</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.order_goodprice" disabled>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">结算重量</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.driOrderInfo.order_mz2" disabled>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">运费（总）</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.order_goodprice * driOrderInfo.driOrderInfo.order_mz2" disabled>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="layui-form-item" align="center">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">是否准时</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.driOrderInfo.order_ontime" disabled>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">评价星级</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.driOrderInfo.order_srart" disabled>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 120px">司机手机号码</label>
+                    <div class="layui-inline">
+                        <input type="text" class="layui-input"  v-bind:value="driOrderInfo.d_phonenum" disabled>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</fieldset>
+</body>
+</html>
+<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script src="js/PageJump.js"></script>
+<script>
+
+    var params = paramsReady();
+	var order_id = params.order_id;
+	console.log("司机订单详情页面接收到order_id："+order_id);
+
+
+	dataReady(order_id);
+    function dataReady(order_id) {
+        new Vue({
+            el:"#driOrderInfo",
+            data() {
+                return {
+                    driOrderInfo: null,
+                }
+            },
+            mounted() {
+                //axios获得司机订单详情
+                axios.post('http://localhost:8081/getDriOrderAllInfo', "dri_orderId=" + order_id)
+                    .then(response => (this.driOrderInfo = response['data']))
+                    .catch(function(error) {
+                        alert("获得司机订单信息出错");
+                    });
+            },
+        })
+    }
+    
+</script>

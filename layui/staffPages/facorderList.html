@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>工厂进行中订单列表</title>
+    <link rel="stylesheet" href="../css/layui.css">
+    <script src="../layui.js"></script>
+</head>
+<body style="padding-right: 120px;padding-left: 120px;background-color: whitesmoke">
+
+<!-- 内容主体区域 -->
+    <div style="padding: 15px;padding-right: 15px">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>进行中订单详情</legend>
+            <hr class="layui-border-orange">
+        </fieldset>
+    </div>
+
+    <fieldset class="layui-elem-field  layui-border-blue" style="height: 500px">
+        <legend>进行中订单列表（出）<button class="layui-btn layui-btn-normal layui-btn-sm">点击刷新</button></legend>
+        <div class="layui-field-boxS">
+            <div class="layui-form">
+                <table class="layui-table" id="orderIng1">
+
+                </table>
+            </div>
+        </div>
+    </fieldset>
+
+
+
+    <fieldset class="layui-elem-field  layui-border-orange" style="height: 500px">
+    <legend>进行中订单列表（入）<button class="layui-btn layui-btn-warm layui-btn-sm">点击刷新</button></legend>
+    <div class="layui-field-boxS" >
+        <div class="layui-form">
+            <table class="layui-table" id="orderIng2">
+
+            </table>
+        </div>
+    </div>
+</fieldset>
+
+</body>
+</html>
+<script>
+    var param = paramsReady();
+    var fac_id = param.fac_id;
+    var staff_id = param.staff_id;
+
+    getFacOrderIng1();
+    getFacOrderIng2();
+
+    //正在进行订单（出）的绑定
+    function getFacOrderIng1(){
+        layui.use('table',function () {
+            var table = layui.table;
+            table.render({
+                elem:'#orderIng1'
+                ,url:'http://localhost:8081/getFacOrderIng1'
+                ,title:"正在进行订单（出）"
+                ,where:{fac_id:1}
+                ,method:'post'
+                ,page: true //开启分页
+                ,initSort: {field:'order_startdate', type:'desc'}
+                ,parseData:function (res) {
+                    return {
+                        "code":0
+                        ,"msg":""
+                        ,"count":res.length
+                        ,"data": res //解析数据列表
+                    };
+                }
+                ,cols:[[
+                    {field:'ffName',title:'卖家工厂',width:110},
+                    {field:'ftName',title:'买家工厂',width:110},
+                    {field:'order_startdate',title:'申请时间',width:180,sort:true,templet:function (d) {
+                            return d.factoryOrder.order_startdate.slice(0,16);
+                        }},
+                    {field:'',title:'目标车辆数',sort:true,templet:function (d) {
+                            return Number(d.factoryOrder.order_targetcarnum);
+                        }},
+                    {field:'',title:'实际车辆数',sort:true,templet:function (d) {
+                            return Number(d.factoryOrder.order_actualcarnum);
+                        }},
+                    {field:'',title:'目标吨数',sort:true,templet:function (d) {
+                            return Number(d.factoryOrder.order_targetweight);
+                        }},
+                    {field:'',title:'实际吨数',sort:true,templet:function (d) {
+                            return Number(d.factoryOrder.order_actualweight);
+                        }},
+                    {field:'',title:'煤炭种类',width:120,sort:true,templet:function (d) {
+                            return d.factoryOrder.order_goodclass;
+                        }},
+                    {field:'',title:'煤炭运费',width:120,sort:true,templet:function (d) {
+                            return d.factoryOrder.order_goodprice;
+                        }},
+                    {field:'',title:"当前状态",templet:function (d) {
+                            var res = d.factoryOrder.order_state;
+                            if (res == 1){
+                                return '<p style="color: green">接单中/进行中</p>'
+                            }else {
+                                return "<p style='color: blue'>接单完成/进行中</p>";
+                            }
+                        }},
+                    {field:'',title:"详情",templet:function (d) {
+                            let fac_orderId = d.factoryOrder.id;
+                            return "<button class='layui-btn' onclick='seeFacorderIng("+fac_orderId+",true)' >查看详情</button>"
+                        }}
+                ]]
+                ,done:function (res, curr, count) {
+                    console.log("正在进行订单（出）完成");
+                }
+            });
+
+        });
+    }
+
+    //正在进行订单（入）的绑定
+    function getFacOrderIng2(){
+        layui.use('table',function () {
+            var table = layui.table;
+            table.render({
+                elem:'#orderIng2'
+                ,url:'http://localhost:8081/getFacOrderIng2'
+                ,title:"正在进行订单（入）"
+                ,where:{fac_id:1}
+                ,method:'post'
+                ,page: true //开启分页
+                ,initSort: {field:'order_startdate', type:'desc'}
+                ,parseData:function (res) {
+                    return {
+                        "code":0
+                        ,"msg":""
+                        ,"count":res.length
+                        ,"data": res //解析数据列表
+                    };
+                }
+                ,cols:[[
+                    {field:'ffName',title:'卖家工厂',width:110},
+                    {field:'ftName',title:'买家工厂',width:110},
+                    {field:'order_startdate',title:'申请时间',width:180,sort:true,templet:function (d) {
+                            return d.factoryOrder.order_startdate.slice(0,16);
+                        }},
+                    {field:'',title:'目标车辆数',sort:true,templet:function (d) {
+                            return d.factoryOrder.order_targetcarnum;
+                        }},
+                    {field:'',title:'实际车辆数',sort:true,templet:function (d) {
+                            return d.factoryOrder.order_actualcarnum;
+                        }},
+                    {field:'',title:'目标吨数',sort:true,templet:function (d) {
+                            return d.factoryOrder.order_targetweight
+                        }},
+                    {field:'',title:'实际吨数',sort:true,templet:function (d) {
+                            return d.factoryOrder.order_actualweight;
+                        }},
+                    {field:'',title:'煤炭种类',width:120,sort:true,templet:function (d) {
+                            return d.factoryOrder.order_goodclass;
+                        }},
+                    {field:'',title:'煤炭运费',width:120,sort:true,templet:function (d) {
+                            return d.factoryOrder.order_goodprice;
+                        }},
+                    {field:'',title:"当前状态",templet:function (d) {
+                            var res = d.factoryOrder.order_state;
+                            if (res == 1){
+                                return '<p style="color: green">接单中/进行中</p>'
+                            }else {
+                                return "<p style='color: blue'>接单完成/进行中</p>";
+                            }
+                        }},
+                    {field:'',title:"详情",templet:function (d) {
+                            let fac_orderId = d.factoryOrder.id;
+                            return "<button class='layui-btn' onclick='seeFacorderIng("+fac_orderId+",false)' >查看详情</button>"
+                        }}
+                ]]
+                ,done:function (res, curr, count) {
+                    console.log("正在进行订单（入）完成");
+                }
+            });
+
+        });
+    }
+
+    /**
+     * 跳转页面到订单详情页面
+     * @param facOrderId
+     */
+    function seeFacorderIng(facOrderId,ifff) {
+        let param = {
+            facOrderid:facOrderId,
+            ifff:ifff
+        };
+        let url = creaturl('facOrderInfo',param);
+        console.log("跳转页面至:"+url);
+        window.open(url);
+    }
+
+    /***
+     * 创建跳转路径
+     * @param pageName 页面名称【pageName.heml】
+     * @param pageParams 需要传的参数[json]
+     */
+    function creaturl(pageName,pageParams) {
+        pageName = pageName + ".html?";
+
+        var params = "";
+
+        paramKeys = Object.keys(pageParams);
+
+        for (var i = 0; i < paramKeys.length; i++) {
+            key = paramKeys[i];
+
+            params = params + key + "=" +  pageParams[key];
+
+            if(i<paramKeys.length-1){
+                params = params + "&";
+            }
+        }
+
+        return pageName+params;
+    }
+
+    /***
+     * 从当前网页中获取传递过来的恶
+     * @returns {{}}
+     */
+    function paramsReady() {
+        //获得传过来的login与在数据库中对应的表单
+        var paras = location.search;			//search获得地址中的参数，内容为'?itemId=12'
+        var result = paras.match(/[^\?&]*=[^&]*/g); 	//match是字符串中符合的字段一个一个取出来，result中的值为['login=xx','table=admin']
+        console.log(result);
+        paras = {};					//让paras变成没有内容的json对象
+        for(i in result){
+
+            var temp = result[i].split('=');	//split()将一个字符串分解成一个数组,两次遍历result中的值分别为['itemId','xx']
+            paras[temp[0]] = temp[1];
+        }
+        return paras;
+    }
+
+</script>

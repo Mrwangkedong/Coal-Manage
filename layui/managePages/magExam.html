@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>待审核信息列表</title>
+		<link rel="stylesheet" href="../css/layui.css">
+		<script src="../layui.js"></script>
+	</head>
+	<body>
+
+		<div class="layui-layout layui-layout-admin">
+			<div class="layui-header layui-bg-green">
+				<div class="layui-logo">layout demo</div>
+				<!-- 头部区域（可配合layui 已有的水平导航） -->
+				<ul class="layui-nav layui-layout-left layui-bg-green">
+					<li class="layui-nav-item"><a href="magExam.html">待审批信息管理</a></li>
+					<li class="layui-nav-item"><a href="magAllUser.html">用户信息管理</a></li>
+					<li class="layui-nav-item"><a href="magWallet.html">钱包信息管理</a> </li>
+				</ul>
+				<ul class="layui-nav layui-layout-right layui-bg-green">
+					<li class="layui-nav-item">
+						<a href="javascript:;">
+							<img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
+								class="layui-nav-img">
+							tester
+						</a>
+					</li>
+					<li class="layui-nav-item"><a href="">Sign out</a></li>
+				</ul>
+			</div>
+
+			<div class="layui-body">
+				<!-- 内容主体区域 -->
+				<div style="padding: 15px;">
+					<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+						<legend>订单管理</legend>
+						<hr class="layui-border-orange">
+					</fieldset>
+
+					<div class="layui-tab layui-tab-card">
+						<ul class="layui-tab-title">
+							<li class="layui-this">待审批新工厂注册申请</li>
+							<li>待审批工厂信息修改申请</li>
+							<li>待审批新司机用户注册申请</li>
+						</ul>
+						<!--                待审批新工厂注册申请-->
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show">
+								<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+									<legend>待审批新工厂注册申请&ensp;<button class="layui-btn layui-btn-sm" onclick="getNewFac()">点击刷新</button></legend>
+								</fieldset>
+
+								<div class="layui-form">
+									<table class="layui-table" id="facNew">
+
+									</table>
+								</div>
+							</div>
+							<!--                    待审批工厂信息修改申请-->
+							<div class="layui-tab-item">
+								<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+									<legend>待审批工厂信息修改申请&ensp;<button class="layui-btn layui-btn-sm" onclick="getEditFac()">点击刷新</button></legend>
+								</fieldset>
+
+								<div class="layui-form">
+									<table class="layui-table" id="facEdit">
+
+									</table>
+								</div>
+							</div>
+
+							<div class="layui-tab-item">
+								<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+									<legend>待审批新司机用户注册申请&ensp;<button class="layui-btn layui-btn-sm" onclick="getNewDriver()">点击刷新</button></legend>
+								</fieldset>
+
+								<div class="layui-form">
+									<table class="layui-table" id="driverNew">
+
+									</table>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</body>
+</html>
+<script src="../js/PageJump.js"></script>
+<script>
+	getNewFac();
+	getEditFac();
+	getNewDriver();
+
+	function getNewFac() {
+		layui.use('table', function() {
+			var table = layui.table;
+			table.render({
+				elem: "#facNew",
+				url: 'http://localhost:8081/getNewFacList',
+				title: "待审批新工厂注册申请",
+				page: true //开启分页
+					,
+				method: 'get',
+				parseData: function(res) {
+					return {
+						"code": 0,
+						"msg": "",
+						"count": res.length,
+						"data": res //解析数据列表
+					};
+				},
+				cols: [
+					[{
+							field: "fac_name",
+							title: "工厂名称"
+						},
+						{
+							field: "fac_address",
+							title: "工厂地址"
+						},
+						{
+							field: "fac_lpname",
+							title: "工厂法人姓名"
+						},
+						{
+							field: '',
+							title: "详情",
+							templet: function(d) {
+								let fac_id = d.fac_id;
+								return "<button class='layui-btn' onclick='seeNewFacInfo(" +
+									fac_id + ")' >查看详情</button>"
+							}
+						},
+					]
+				]
+			})
+		});
+	}
+
+
+	function getEditFac() {
+		layui.use('table', function() {
+			var table = layui.table;
+			table.render({
+				elem: "#facEdit",
+				url: 'http://localhost:8081/getEditFacList',
+				title: "待审批新工厂注册申请",
+				page: true //开启分页
+					,
+				method: 'get',
+				parseData: function(res) {
+					return {
+						"code": 0,
+						"msg": "",
+						"count": res.length,
+						"data": res //解析数据列表
+					};
+				},
+				cols: [
+					[{
+							field: "fac_name",
+							title: "工厂名称"
+						},
+						{
+							field: "fac_address",
+							title: "工厂地址"
+						},
+						{
+							field: "fac_lpname",
+							title: "工厂法人姓名"
+						},
+						{
+							field: '',
+							title: "详情",
+							templet: function(d) {
+								let fac_id = d.fac_id;
+								return "<button class='layui-btn' onclick='seeEditFacInfo(" +
+									fac_id + ")' >查看详情</button>"
+							}
+						},
+					]
+				]
+			})
+		});
+	}
+
+
+
+
+	function getNewDriver() {
+		layui.use('table', function() {
+			var table = layui.table;
+			table.render({
+				elem: "#driverNew",
+				url: 'http://localhost:8081/getNewDriverList',
+				title: "待审批新司机册申请",
+				page: true //开启分页
+					,
+				method: 'get',
+				parseData: function(res) {
+					return {
+						"code": 0,
+						"msg": "",
+						"count": res.length,
+						"data": res //解析数据列表
+					};
+				},
+				cols: [
+					[{
+							field: "d_name",
+							title: "司机姓名"
+						},
+						{
+							field: "d_sex",
+							title: "性别"
+						},
+						{
+							field: "d_phonenum",
+							title: "手机号码"
+						},
+						{
+							field: "d_birthdate",
+							title: "出生日期",
+							templet: function(d) {
+								return d.d_birthdate.slice(0, 10);
+							}
+						},
+						{
+							field: 'dcard_carclass',
+							title: "车辆类型",
+							templet: function(d) {
+								let dcard_carclass = d.dcard_carclass;
+								if (dcard_carclass === 1) {
+									return "半挂";
+								} else {
+									return "前四后八"
+								}
+
+							}
+						},
+						{
+							field: '',
+							title: "操作",
+							templet: function(d) {
+								let d_id = d.id;
+								return "<button class='layui-btn' onclick='seeNewDriverInfo(" + d_id + ")' >查看详情</button>"
+							}
+						},
+					]
+				]
+			})
+		});
+	}
+
+	
+
+
+	/**
+	 * 前往工厂页面详情
+	 * @param fac_id
+	 */
+	function seeNewFacInfo(fac_id) {
+		let param = {
+			"fac_id": fac_id,
+			"if_new": true
+		};
+		let url = creaturl('newFacInfo', param);
+		console.log("跳转至: ", url);
+		window.open(url);
+	}
+
+
+	/**
+	 * 前往工厂页面详情
+	 * @param fac_id
+	 */
+	function seeEditFacInfo(fac_id) {
+		let param = {
+			"fac_id": fac_id,
+			"if_new": false
+		};
+		let url = creaturl('newFacInfo', param);
+		console.log("跳转至: ", url);
+		window.open(url);
+	}
+
+	/**
+	 * 前往司机页面详情
+	 * @param fac_id
+	 */
+	function seeNewDriverInfo(d_id) {
+		let param = {
+			"d_id": d_id,
+			"if_new": true
+		};
+		let url = creaturl('newDriverInfo', param);
+		console.log("跳转至: ", url);
+		window.open(url);
+	}
+</script>

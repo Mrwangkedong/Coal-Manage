@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>工厂信息管理</title>
+    <link rel="stylesheet" href="css/layui.css">
+    <script src="layui.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=fCP53ZyuQkjn4XVYM2qZNRYGI3s1kmYT"></script>
+	<script src = "https://cdn.staticfile.org/vue/2.4.2/vue.min.js" ></script>
+	<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+
+    <div class="layui-header layui-bg-green">
+        <div class="layui-logo">layout demo</div>
+        <!-- 头部区域（可配合layui 已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left layui-bg-green">
+        <li class="layui-nav-item" ><a id="facIndexePage" href="">订单管理</a></li>
+        <li class="layui-nav-item" ><a id="facMsgePage" href="">工厂信息管理</a></li>
+        <li class="layui-nav-item" ><a id="facWalletPage" href="">钱包信息管理</a></li>
+        <li class="layui-nav-item" ><a id="facMessagePage" href="">消息管理<span class="layui-badge-dot layui-bg-orange"></span></a></li>
+        </ul>
+        <ul class="layui-nav layui-layout-right layui-bg-green">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img">
+                    tester
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">set 1</a></dd>
+                    <dd><a href="">set 2</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">Sign out</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>工厂信息管理</legend>
+                <hr class="layui-border-orange">
+            </fieldset>
+
+
+<!--            标签栏-->
+            <div class="layui-tab layui-tab-card">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">工厂员工信息</li>
+                    <li>添加员工信息</li>
+                    <li>查看工厂资质信息</li>
+                    <li>工厂资质信息更改</li>
+                    <li></li>
+                </ul>
+
+                <div class="layui-tab-content" id="facMsg">
+<!--                    工厂员工信息-->
+                    <div class="layui-tab-item  layui-show">
+
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                            <legend>工厂员工信息</legend>
+                        </fieldset>
+
+                        <div class="layui-form">
+                            <table class="layui-table" id="facStaff" lay-filter="demoEvent">
+
+                            </table>
+                        </div>
+                    </div>
+
+<!--                    添加员工信息-->
+                    <div class="layui-tab-item">
+                        <h1 class="layui-col-lg-offset4">填写员工信息</h1>
+                        <br/><br/>
+                        <form class="layui-form" lay-filter="staffNew">
+                            <!--第一行-->
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">员工姓名</label>
+                                    <div class="layui-inline">
+                                        <input type="text" class="layui-input" id="ff_name" name="staffName" >
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                        <label class="layui-form-label">性别</label>
+                                        <div class="layui-input-block">
+                                            <select name="staffSex">
+                                                <option value=""></option>
+                                                <option value="0">男</option>
+                                                <option value="1">女</option>
+                                            </select>
+                                        </div>
+                                </div>
+
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">所属工厂</label>
+                                    <div class="layui-inline">
+<!--                                        标签id存储该工厂id-->
+                                        <input type="text" class="layui-input" name="staffFacName" value="大秀山" disabled>
+                                    </div>
+                                </div>
+
+                            </div>
+<!--                            第二行-->
+                            <div class="layui-form-item">
+
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">手机号码</label>
+                                    <div class="layui-inline">
+                                        <input type="number" class="layui-input" name="staffPhone" >
+                                    </div>
+                                </div>
+
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">员工类别</label>
+                                    <div class="layui-input-block">
+                                        <select  name="staffClass">
+                                            <option value=""></option>
+                                            <option value="1">管理员</option>
+                                            <option value="2">称重员</option>
+                                            <option value="3">化验员</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">身份证号码</label>
+                                    <div class="layui-inline">
+                                        <input type="number" class="layui-input" name="staffPcard" >
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+<!--                            家庭住址-->
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">出生日期</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" class="layui-input" id="birthday" placeholder="yyyy-MM-dd" name="birthday">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">登陆密码</label>
+                                    <div class="layui-input-inline">
+                                        <input type="password" class="layui-input" name="staffPassword">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">家庭住址</label>
+                                    <div class="layui-inline" style="width: 500px">
+                                        <input type="text" class="layui-input" name="staffPlace" width="400px">
+                                    </div>
+                                </div>
+                            </div>
+
+<!--                            提交-->
+                            <div class="layui-form-item layui-col-lg-offset3">
+                                <div class="layui-input-block">
+                                    <button type="button" class="layui-btn"  id="LAY-component-form-getval">提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary" id="form-reset">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+<!--                    查看工厂资质信息-->
+                    <div class="layui-tab-item"> 
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                            <legend>查看工厂资质信息</legend>
+                        </fieldset>
+
+                        <form class="layui-form" lay-filter="staffNew" style="font-size: larger"  >
+                            <!--第一行-->
+                            <div class="layui-form-item">
+                                <div class="layui-inline" style="width: 500px">
+                                    <label class="layui-form-label" style="width: 120px">工厂名称：</label>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label" style="font-weight: bold;font-family: 黑体">{{facMsgInfo.name}}</label>
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label" style="width: 120px">工厂地址：</label>
+                                        <label class="layui-form-label" style="font-weight: bold;font-family: 黑体;width: 250px">{{facMsgInfo.factory_address}}</label>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-inline" style="width: 500px">
+                                    <label class="layui-form-label" style="width: 120px">法人姓名：</label>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label" style="font-weight: bold;font-family: 黑体">{{facMsgInfo.factory_lpname}}</label>
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label" style="width: 130px">法人身份证号码：</label>
+                                    <label class="layui-form-label"  style="font-weight: bold;font-family: 黑体;width: 250px">{{facMsgInfo.factory_lpcardnum}}</label>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label" style="width: 130px">法人身份证照片（正）：</label>
+                                    <img  width="200px" height="200px" src="photo/defaut.png" id="factory_lpcardphoto1">
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label" style="width: 130px">法人身份证照片（反）：</label>
+                                    <img src="photo/defaut.png" width="200px" height="200px" id="factory_lpcardphoto2">
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label" style="width: 130px">工厂营业资格证：</label>
+                                    <img src="photo/defaut.png" width="200px" height="200px" id="factory_licencephoto">
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+<!--                    工厂资质信息更改-->
+                    <div class="layui-tab-item">
+                        <form class="layui-form" lay-filter="FacMsgEdit">
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">工厂名称</label>
+                                    <div class="layui-inline">
+                                        <input type="text" class="layui-input" v-bind:value="facMsgInfo.name" name="facName">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">工厂法人姓名</label>
+                                    <div class="layui-inline">
+                                        <input type="text" class="layui-input" v-bind:value="facMsgInfo.factory_lpname" name="factory_lpname">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">工厂法人身份证</label>
+                                    <div class="layui-inline">
+                                        <input type="text" class="layui-input" v-bind:value="facMsgInfo.factory_lpcardnum" name="factory_lpcardnum">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-inline" style="width: 310px">
+                                    <button type="button" class="layui-btn"  onclick="getAddress()">点击获得当前工厂经纬度</button>
+                                </div>
+
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">位置经度</label>
+                                    <div class="layui-inline">
+                                        <input type="text" class="layui-input" value="" name="factory_longitude" id="factory_longitude"  v-bind:value="facMsgInfo.factory_longitude">
+                                    </div>
+                                </div>
+
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">位置纬度</label>
+                                    <div class="layui-inline">
+                                        <input type="text" class="layui-input" value="" name="factory_latitude" id="factory_latitude" v-bind:value="facMsgInfo.factory_latitude">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">工厂地址</label>
+                                    <div class="layui-inline">
+                                        <input type="text" class="layui-input" value="" name="factory_address" id="factory_address" v-bind:value="facMsgInfo.factory_address">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-inline" style="width: 310px">
+                                    <label class="layui-form-label"><span style="color: red">*</span>工厂营业资格证更改</label>
+                                    <button type="button" class="layui-btn layui-btn-normal fileUpload" id="file1">选择文件		</button>
+                                </div>
+                                <div class="layui-inline" style="width: 310px">
+                                    <label class="layui-form-label"><span style="color: red">*</span>法人身份证（正）</label>
+                                    <div class="layui-inline">
+                                    <button type="button" class="layui-btn layui-btn-normal fileUpload" id="file2">选择文件	</button>
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label"><span style="color: red">*</span>法人身份证（反）</label>
+                                    <div class="layui-inline">
+                                    <button type="button" class="layui-btn layui-btn-normal fileUpload" id="file3">选择文件	</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item layui-col-lg-offset3">
+                            <div class="layui-input-block">
+                                <button type="button" class="layui-btn layui-btn-warm" id="LAY_layedit_code_submit">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        底部固定区域
+    </div>
+
+</div>
+
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/PageJump.js"></script>
+<script>
+    
+	var params = paramsReady();
+	console.log(params)
+	var fac_id = params.fac_id;
+	
+	
+	//设置导航网页fac_id
+	setFacId(fac_id);
+	//数据准备
+    staffDataReady();
+    layui.use(['upload','form'], function() {
+        var upload = layui.upload;
+        var form = layui.form;
+        var layer = layui.layer;
+
+
+        //表单取值
+        layui.$('#LAY_layedit_code_submit').on('click', function(){
+            var data = form.val('FacMsgEdit');
+            data['fac_id'] = fac_id;
+            alert(JSON.stringify(data));
+            //调用ajax进行添加
+            $.ajax({
+                url:"http://localhost:8081/editFacMsgInfo",
+                type:'post',
+                data:data,
+                beforeSend:function(){
+
+                },
+                success:function (data) {
+                    console.log(data);
+                    if (data == 1){
+                        layer.msg("提交修改申请成功!");
+                    }else {
+                        layer.msg("提交修改申请失败!");
+                    }
+                },
+                error:function (error) {
+                    layer.msg('"提交修改申请出错，请稍后再试！');
+                }
+            });
+        });
+
+
+
+        //上传营业资格证
+        upload.render({
+            elem: '#file1'
+            ,url: 'http://localhost:8081/editFacLicencePhoto'
+            ,auto: true
+            ,exts: 'png|jpg'
+            ,acceptMime:"image/*"//规定打开文件选择框时，筛选出的文件类型
+            // ,bindAction: '#LAY_layedit_code_submit'
+            ,before: function(obj){
+                this.data={"fac_id":fac_id};//把当前工厂id传过去
+            }
+            ,done: function(res){
+                layer.msg('上传营业资格证成功');
+            },error: function () {
+                layer.closeAll('loading'); //关闭loading
+                layer.msg('上传营业资格证失败');
+            }
+        });
+
+        //上传法人身份证（正）
+        upload.render({
+            elem: '#file2'
+            ,url: 'http://localhost:8081/editFacLpcardPhoto1'
+            ,auto: true      //自动上传
+            ,exts: 'png|jpg'
+            ,acceptMime:"image/*"//规定打开文件选择框时，筛选出的文件类型
+            ,before: function(obj){
+                this.data={"fac_id":1};//把当前工厂id传过去
+            }
+            ,done: function(res){
+                layer.msg('上传法人身份证（正）成功')
+            },error: function () {
+                layer.closeAll('loading'); //关闭loading
+                layer.msg('上传法人身份证（正）失败');
+            }
+        });
+
+        //上传法人身份证（反）
+        upload.render({
+            elem: '#file3'
+            ,url: 'http://localhost:8081/editFacLpcardPhoto2'
+            ,auto: true
+            ,exts: 'png|jpg'
+            ,acceptMime:"image/*"//规定打开文件选择框时，筛选出的文件类型
+            // ,bindAction: '#LAY_layedit_code_submit'
+            ,before: function(obj){
+                this.data={"fac_id":1};//把当前工厂id传过去
+            }
+            ,done: function(res){
+                layer.msg('上传法人身份证（反）成功')
+            },error: function () {
+                layer.closeAll('loading'); //关闭loading
+                layer.msg('上传法人身份证（反）失败');
+            }
+        });
+
+    });
+	
+	
+	//获得工厂的全部信息
+	new Vue({
+		el:"#facMsg",
+		data() {
+			return {
+				facMsgInfo: null,
+			}
+		},
+		mounted() {
+			axios.post('http://localhost:8081/getFacMsg', "fac_id=" + 1)
+				.then(response => (this.facMsgInfo = response['data']))
+				.catch(function(error) {
+					alert("获得工厂信息出错");
+				});
+		},
+		watch: {
+			facMsgInfo:function(){
+				this.$nextTick(function(){
+					document.getElementById('factory_lpcardphoto1').src = "http://localhost:8081/static/"+this.facMsgInfo.factory_lpcardphoto1;
+					document.getElementById('factory_lpcardphoto2').src = "http://localhost:8081/static/"+this.facMsgInfo.factory_lpcardphoto2;
+					document.getElementById('factory_licencephoto').src = "http://localhost:8081/static/"+this.facMsgInfo.factory_licencephoto;
+				});
+			}
+		},
+		
+	});
+
+    //获得表单数据
+    layui.use('element', function(){
+        var element = layui.element;
+        var form = layui.form;
+        var layer = layui.layer;
+
+        //表单取值
+        layui.$('#LAY-component-form-getval').on('click', function() {
+            var data = form.val('staffNew');
+            data['staff_factoryID'] = 1;  //添加工厂id
+            alert(JSON.stringify(data));
+
+            //调用ajax进行添加
+            $.ajax({
+                url:"http://localhost:8081/addNewStaff",
+                type:'post',
+                data:data,
+                beforeSend:function(){
+
+                },
+                success:function (data) {
+                    console.log(data);
+                    if (data === 1){
+                        layer.msg("添加成功!");
+                        //同步更新表格
+                        staffDataReady();
+                        //进行重置
+                        document.getElementById('form-reset').click();
+                    }else {
+                        layer.msg("添加失败!");
+                    }
+                },
+                error:function (error) {
+                    layer.msg('添加出错，请稍后再试！');
+                }
+            });
+
+
+        });
+
+    });
+
+    //获得经纬度
+    function getAddress(){
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    document.getElementById("factory_longitude").value=position.coords.longitude;
+                    document.getElementById("factory_latitude").value=position.coords.latitude;
+                    //获得具体位置信息
+                    var map = new BMap.Map("allmap");
+                    var point = new BMap.Point(position.coords.longitude,position.coords.latitude);
+                    var gc = new BMap.Geocoder();
+                    gc.getLocation(point, function(rs){
+                        var addComp = rs.addressComponents;
+                        var address = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+                        document.getElementById("factory_address").value=address;
+                    });
+                },
+                function (e) {
+                    throw(e.message);
+                }
+            )
+        }
+    }
+
+
+    //时间选择权
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+
+        //常规用法
+        laydate.render({
+            elem: '#birthday'
+        });
+    });
+
+    //员工信息获取
+    function staffDataReady() {
+        layui.use('table',function () {
+            var table = layui.table;
+            var layer = layui.layer;
+            table.render({
+                elem: '#facStaff'
+                ,url:'http://localhost:8081/getAllStaff'
+                ,title:"工厂员工ALL"
+                ,where:{fac_id:1}
+                ,method:'post'
+                ,parseData:function (res) {
+                    return {
+                        "code":0
+                        ,"msg":""
+                        ,"count":1000
+                        ,"data": res //解析数据列表
+                    };
+                }
+                ,cols:[[
+                    {field:"staff_name",title:"姓名",width:110},
+                    {field:"staff_sex",title:"性别",width:110},
+                    {field:"staff_phonenum",title:"手机号",width:130,event:'setPhoneNum'},
+                    {field:"staff_password",title:"密码",event:'setPwb'},
+                    {field:"staff_birthday",title:"出生日期",templet:function (d) {
+                            return d.staff_birthday.slice(0,10);
+                        },event:'setBirthDay'},
+                    {field:"staff_pcrdnumber",title:"身份证号码",event:'setPcardNum'},
+                    {field:"staff_class",title:"员工类别",event:'setStaffClass',templet:function (d) {
+                            if (d.staff_class == 1){
+                                return "管理人员";
+                            }else {
+                                if (d.staff_class == 2){
+                                    return "称重员";
+                                }else {
+                                    return "化验员";
+                                }
+                            }
+                        }},
+                    {field:"staff_place",title:"家庭住址",event: 'setAddress'},
+                    {field:"",title:"",templet:function (d) {
+                            var staff_id = d.id;
+                            return "<button class='layui-btn layui-btn-danger' type='button' onclick='deleteStaff("+staff_id+")'>删除</button>";
+                        }}
+                ]]
+            });
+
+            //监听单元格事件
+            table.on('tool(demoEvent)', function(obj){
+                var data = obj.data;
+                //更改密码信息
+                if(obj.event === 'setPwb'){
+                    layer.prompt({
+                        formType:0
+                        ,title: '修改 姓名 为 ['+ data.staff_name +'] 的用户密码'
+                        ,value: data.staff_password
+                    }, function(value, index){
+                        if (value === data.staff_password){
+                            alert("新旧密码一致，无需修改");
+                        }else {
+                            console.log("新的密码："+value);//新值
+                            console.log(index);//第几次
+                        }
+                        //关闭当前框
+                        layer.close(index);
+                        //这里一般是发送修改的Ajax请求
+                        $.ajax({
+                           url:"http://localhost:8081/editStaffPwb",
+                            type:'post',
+                            data:{
+                                staff_id:data.id,  //员工id
+                                newPwb:value,
+                            },
+                            beforeSend:function(){
+                               alert('即将发送数据...');
+                            },
+                            success:function (data) {
+                                console.log(data);
+                                if (data === 1){
+                                    layer.msg("更改成功!");
+                                    //同步更新表格和缓存对应的值
+                                    obj.update({
+                                        staff_password: value
+                                    });
+                                }else {
+                                    layer.msg("更改失败!");
+                                }
+                            },
+                            error:function (error) {
+                                layer.msg('更改出错，请稍后再试！');
+                            }
+                        });
+
+                    });
+                }
+
+                //更改手机号码
+                if (obj.event === 'setPhoneNum'){
+                    layer.prompt({
+                        formType:0
+                        ,title: '修改 姓名 为 ['+ data.staff_name +'] 的手机号码'
+                        ,value: data.staff_phonenum
+                    }, function(value, index){
+                        if (value === data.staff_phonenum){
+                            alert("新旧手机号码一致，无需修改");
+                        }else {
+                            console.log("新的手机号码址："+value);//新值
+                            console.log(index);//第几次
+                            //这里一般是发送修改的Ajax请求
+                            $.ajax({
+                                url:"http://localhost:8081/editStaffPhoneNum",
+                                type:'post',
+                                data:{
+                                    staff_id:data.id,  //员工id
+                                    newPhoneNum:value,
+                                },
+                                beforeSend:function(){
+
+                                },
+                                success:function (data) {
+                                    console.log(data);
+                                    if (data === 1){
+                                        layer.msg("更改成功!");
+                                        //同步更新表格和缓存对应的值
+                                        obj.update({
+                                            staff_phonenum: value
+                                        });
+                                    }else {
+                                        layer.msg("更改失败!");
+                                    }
+                                },
+                                error:function (error) {
+                                    layer.msg('更改出错，请稍后再试！');
+                                }
+                            });
+                        }
+                        layer.close(index);//关闭当前框
+
+
+                    });
+                }
+
+                //更改地址信息
+                if(obj.event === 'setAddress'){
+                    layer.prompt({
+                        formType:0
+                        ,title: '修改 姓名 为 ['+ data.staff_name +'] 的用户住址'
+                        ,value: data.staff_place
+                    }, function(value, index){
+                        if (value === data.staff_place){
+                            alert("新旧住址一致，无需修改");
+                        }else {
+                            console.log("新的用户住址："+value);//新值
+                            console.log(index);//第几次
+                            //这里一般是发送修改的Ajax请求
+                            $.ajax({
+                                url:"http://localhost:8081/editStaffPlace",
+                                type:'post',
+                                data:{
+                                    staff_id:data.id,  //员工id
+                                    newPlace:value,
+                                },
+                                beforeSend:function(){
+
+                                },
+                                success:function (data) {
+                                    console.log(data);
+                                    if (data === 1){
+                                        layer.msg("更改成功!");
+                                        //同步更新表格和缓存对应的值
+                                        obj.update({
+                                            staff_place: value
+                                        });
+                                    }else {
+                                        layer.msg("更改失败!");
+                                    }
+                                },
+                                error:function (error) {
+                                    layer.msg('更改出错，请稍后再试！');
+                                }
+                            });
+                        }
+                        layer.close(index);//关闭当前框
+
+
+                    });
+                }
+
+                //修改身份证号码
+                if(obj.event === 'setPcardNum'){
+                    layer.prompt({
+                        formType:0
+                        ,title: '修改 姓名 为 ['+ data.staff_name +'] 的身份证号码'
+                        ,value: data.staff_pcrdnumber
+                    }, function(value, index){
+                        if (value === data.staff_pcrdnumber){
+                            alert("新旧身份证号码一致，无需修改");
+                        }else {
+                            console.log("新的身份证号码："+value);//新值
+                            console.log(index);//第几次
+                            //这里一般是发送修改的Ajax请求
+                            $.ajax({
+                                url:"http://localhost:8081/editStaffPcardNum",
+                                type:'post',
+                                data:{
+                                    staff_id:data.id,  //员工id
+                                    newPcardNum:value,
+                                },
+                                beforeSend:function(){
+                                    alert('即将发送数据...');
+                                },
+                                success:function (data) {
+                                    console.log(data);
+                                    if (data === 1){
+                                        layer.msg("更改成功!");
+                                        //同步更新表格和缓存对应的值
+                                        obj.update({
+                                            staff_pcrdnumber: value
+                                        });
+                                    }else {
+                                        layer.msg("更改失败!");
+                                    }
+                                },
+                                error:function (error) {
+                                    layer.msg('更改出错，请稍后再试！');
+                                }
+                            });
+                        }
+                        layer.close(index);//关闭当前框
+
+
+                    });
+                }
+
+                //修改员工类别
+                if(obj.event === 'setStaffClass'){
+                    layer.prompt({
+                        formType:0
+                        ,title: '修改 姓名 为 ['+ data.staff_name +'] 的员工类别【1/管理员;2/称重员;3/化验员】'
+                        ,value: data.staff_class
+                    }, function(value, index){
+                        if (value === data.staff_class.toString()){
+                            alert("新旧员工类别一致，无需修改");
+                        }else {
+                            console.log("新的员工类别："+value);//新值
+                            console.log(index);//第几次
+                            //这里一般是发送修改的Ajax请求
+                            $.ajax({
+                                url:"http://localhost:8081/editStaffStaffClass",
+                                type:'post',
+                                data:{
+                                    staff_id:data.id,  //员工id
+                                    newStaffClass:Number(value),
+                                },
+                                beforeSend:function(){
+                                    alert('即将发送数据...');
+                                },
+                                success:function (data) {
+                                    console.log(data);
+                                    if (data === 1){
+                                        layer.msg("更改成功!");
+                                        //同步更新表格和缓存对应的值
+                                        obj.update({
+                                            staff_class: value
+                                        });
+                                    }else {
+                                        layer.msg("更改失败!");
+                                    }
+                                },
+                                error:function (error) {
+                                    layer.msg('更改出错，请稍后再试！');
+                                }
+                            });
+                        }
+                        layer.close(index);//关闭当前框
+
+                    });
+                }
+                //修改出生日期
+                if(obj.event === 'setBirthDay'){
+                    layer.prompt({
+                        formType:0
+                        ,title: '修改 姓名 为 ['+ data.staff_name +'] 的出生日期【格式：yyyy-mm-dd】'
+                        ,value: data.staff_birthday.slice(0,10)
+                    }, function(value, index){
+                        if (value === data.staff_birthday.slice(0,10)){
+                            alert("新旧出生日期一致，无需修改");
+                        }else {
+                            console.log("新的出生日期："+value);//新值
+                            console.log(index);//第几次
+                            //这里一般是发送修改的Ajax请求
+                            $.ajax({
+                                url:"http://localhost:8081/editStaffBirthDay",
+                                type:'post',
+                                data:{
+                                    staff_id:data.id,  //员工id
+                                    newBirthDay:value,
+                                },
+                                beforeSend:function(){
+
+                                },
+                                success:function (data) {
+                                    console.log(data);
+                                    if (data === 1){
+                                        layer.msg("更改成功!");
+                                        //同步更新表格和缓存对应的值
+                                        obj.update({
+                                            staff_birthday: value
+                                        });
+                                    }else {
+                                        layer.msg("更改失败!");
+                                    }
+                                },
+                                error:function (error) {
+                                    layer.msg('更改出错，请稍后再试！');
+                                }
+                            });
+                        }
+                        layer.close(index);//关闭当前框
+
+
+
+
+
+                    });
+                }
+
+            });
+
+
+        });
+    }
+
+    //删除员工操作
+    function deleteStaff(staff_id) {
+        layer.confirm('是否确认删除',function (index) {
+            $.ajax({
+                url:"http://localhost:8081/deleteStaffById",
+                type:'post',
+                data:{
+                    staff_id:staff_id,  //员工id
+                },
+                beforeSend:function(){
+
+                },
+                success:function (data) {
+                    console.log(data);
+                    if (data === 1){
+                        layer.msg("删除成功!");
+                        //同步更新表格
+                        staffDataReady();
+                    }else {
+                        layer.msg("删除失败!");
+                    }
+                },
+                error:function (error) {
+                    layer.msg('删除出错，请稍后再试！');
+                }
+            });
+
+            layer.close(index);
+        });
+
+
+
+    }
+
+    //获得工厂信息
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>工厂订单管理</title>
+    <link rel="stylesheet" href="css/layui.css">
+    <script src="layui.js"></script>
+    <script src="js/tableRun.js"></script>
+    <script src = "https://cdn.staticfile.org/vue/2.4.2/vue.min.js" ></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-green">
+        <div class="layui-logo">layout demo</div>
+        <!-- 头部区域（可配合layui 已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left layui-bg-green">
+           <li class="layui-nav-item" ><a id="facIndexePage" href="">订单管理</a></li>
+           <li class="layui-nav-item" ><a id="facMsgePage" href="">工厂信息管理</a></li>
+           <li class="layui-nav-item" ><a id="facWalletPage" href="">钱包信息管理</a></li>
+           <li class="layui-nav-item" ><a id="facMessagePage" href="">消息管理<span class="layui-badge-dot layui-bg-orange"></span></a></li>
+        </ul>
+        <ul class="layui-nav layui-layout-right layui-bg-green">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img">
+                    tester
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">set 1</a></dd>
+                    <dd><a href="">set 2</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">Sign out</a></li>
+        </ul>
+    </div>
+
+
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>订单管理</legend>
+                <hr class="layui-border-orange">
+            </fieldset>
+
+            <div class="layui-tab layui-tab-card">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">待接受订单（入）</li>
+                    <li>待接受订单（出）</li>
+                    <li>正在进行订单（入）</li>
+                    <li>正在进行订单（出）</li>
+                    <li>历史订单（入）</li>
+                    <li>历史订单（出）</li>
+                    <li>订单发布</li>
+                    <li></li>
+                </ul>
+<!--                待接受订单（入）-->
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                            <legend>待接受订单（入）</legend>
+                        </fieldset>
+
+                        <div class="layui-form">
+                            <table class="layui-table" id="orderWait2">
+
+                            </table>
+                        </div>
+                    </div>
+<!--                    待接受订单（出)-->
+                    <div class="layui-tab-item">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                            <legend>待接受订单（出)</legend>
+                        </fieldset>
+
+                        <div class="layui-form">
+                            <table class="layui-table" id="orderWait1">
+
+                            </table>
+                        </div>
+                    </div>
+
+<!--正在进行订单（入）-->
+                    <div class="layui-tab-item">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                            <legend>正在进行订单（入）</legend>
+                        </fieldset>
+
+                        <div class="layui-form">
+                            <table class="layui-table" id="orderIng2">
+
+                            </table>
+                        </div>
+                    </div>
+
+<!--                   正在进行订单（出） -->
+                    <div class="layui-tab-item">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                            <legend>正在进行订单（出）</legend>
+                        </fieldset>
+
+                        <div class="layui-form">
+                            <table class="layui-table" id="orderIng1">
+
+                            </table>
+                        </div>
+                    </div>
+
+<!--                  历史订单（入）  -->
+                    <div class="layui-tab-item">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                            <legend>历史订单（入）</legend>
+                        </fieldset>
+
+                        <div class="layui-form">
+                            <table class="layui-table" id="orderEd2">
+
+                            </table>
+                        </div>
+                    </div>
+
+<!--                    历史订单（出）-->
+                    <div class="layui-tab-item">
+
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                            <legend>历史订单（出）</legend>
+                        </fieldset>
+
+                        <div class="layui-form">
+                            <table class="layui-table" id="orderEd1">
+
+                            </table>
+                        </div>
+
+                    </div>
+
+<!--                    发布新订单-->
+                    <div class="layui-tab-item">
+                        <h1 class="layui-col-lg-offset4">填写新订单信息</h1>
+                        <br/><br/>
+                       <form class="layui-form" lay-filter="orderNew">
+                           <div class="layui-form-item">
+                               <div class="layui-inline">
+                                   <label class="layui-form-label">当前工厂</label>
+                                   <div class="layui-inline">
+                                       <input type="text" class="layui-input" id="ff_name" name="ffName" value="" disabled>
+                                   </div>
+
+                                   <div class="layui-inline">
+                                       <label class="layui-form-label">目标工厂</label>
+                                       <div class="layui-input-inline" id="facNameList" >
+                                           <select lay-verify="required" lay-search="" name="ft_id">
+                                              <option v-bind:value="key+1" v-for="(value, key) in facNames">{{value}}</option>
+                                           </select>
+                                       </div>
+                                   </div>
+
+                                   <div class="layui-inline">
+                                       <label class="layui-form-label">车辆类型</label>
+                                       <div class="layui-input-inline">
+                                           <select lay-verify="" name="carClass">
+                                               <option value="1">半挂</option>
+                                               <option value="2">前四后八</option>
+                                           </select>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+
+                               <div class="layui-form-item">
+                                   <div class="layui-inline">
+                                       <label class="layui-form-label">货物类型</label>
+                                       <div class="layui-inline">
+                                           <input type="text" class="layui-input" value="精煤" name="goodClass">
+                                       </div>
+                                   </div>
+
+                                   <div class="layui-inline">
+                                       <label class="layui-form-label">目标车辆数</label>
+                                       <div class="layui-inline">
+                                           <input type="text" class="layui-input" placeholder="请输入目标车辆数" name="targetCarNum">
+                                       </div>
+                                   </div>
+
+                                   <div class="layui-inline">
+                                       <label class="layui-form-label">目标货物重量（吨）</label>
+                                       <div class="layui-inline">
+                                           <input type="text" class="layui-input" placeholder="请输入目标货物重量" name="targetGoodNum">
+                                       </div>
+                                   </div>
+
+                               </div>
+
+
+                           <div class="layui-form-item">
+                               <div class="layui-inline ">
+                                   <label class="layui-form-label">规定运输时间（小时）</label>
+                                   <div class="layui-inline">
+                                       <input type="text" class="layui-input"  placeholder="请输入规定运输时间" name="targetTransportTime">
+                                   </div>
+                               </div>
+                               <div class="layui-inline ">
+                                   <label class="layui-form-label">运费（￥/吨）</label>
+                                   <div class="layui-inline">
+                                       <input type="text" class="layui-input"  placeholder="请输入订单运费" name="goodPrice">
+                                   </div>
+                               </div>
+                           </div>
+
+
+                           <div class="layui-form-item layui-col-lg-offset3">
+                               <div class="layui-input-block">
+                                   <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1" id="LAY-component-form-getval">立即提交</button>
+                                   <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                               </div>
+                           </div>
+
+                       </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        底部固定区域
+    </div>
+</div>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/PageJump.js"></script>
+<script>
+    
+	var params = paramsReady();
+	var fac_id = params.fac_id;
+	
+	
+	//设置导航网页fac_id
+	setFacId(fac_id);
+	
+    //获得当前工厂名称
+    getFacName(fac_id);
+    //获得全部工厂名称
+    new Vue({
+        el:'#facNameList',
+        data(){
+            return{
+                facNames:null,
+            }
+        },
+        mounted(){
+            axios.get('http://localhost:8081/getFacNames')
+                .then(response => (this.facNames = response['data']))
+                .catch(function(error) {
+                    alert("获得工厂名称信息出错");
+                });
+        },
+        watch:{
+            facNames:function () {
+                this.$nextTick(function () {
+                    console.log(this.facNames)
+                })
+            }
+        }
+    });
+
+
+
+
+</script>
+</body>
+</html>

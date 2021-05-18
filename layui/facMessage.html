@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>工厂消息页面</title>
+		<link rel="stylesheet" href="css/layui.css">
+		<script src="layui.js"></script>
+		<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+		<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+	</head>
+	<body>
+		<div class="layui-layout layui-layout-admin">
+			<div class="layui-header layui-bg-green">
+				<div class="layui-logo">layout demo</div>
+				<!-- 头部区域（可配合layui 已有的水平导航） -->
+				<ul class="layui-nav layui-layout-left layui-bg-green">
+				<li class="layui-nav-item" ><a id="facIndexePage" href="">订单管理</a></li>
+				<li class="layui-nav-item" ><a id="facMsgePage" href="">工厂信息管理</a></li>
+				<li class="layui-nav-item" ><a id="facWalletPage" href="">钱包信息管理</a></li>
+				<li class="layui-nav-item" ><a id="facMessagePage" href="">消息管理<span class="layui-badge-dot layui-bg-orange"></span></a></li>
+				</ul>
+				<ul class="layui-nav layui-layout-right layui-bg-green">
+					<li class="layui-nav-item">
+						<a href="javascript:;">
+							<img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
+								class="layui-nav-img">
+							tester
+						</a>
+					</li>
+					<li class="layui-nav-item"><a href="">Sign out</a></li>
+				</ul>
+			</div>
+
+			<div class="layui-body">
+				<!-- 内容主体区域 -->
+				<div style="padding: 15px;">
+					<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+						<legend>订单管理</legend>
+						<hr class="layui-border-orange">
+					</fieldset>
+
+					<div class="layui-tab">
+						<ul class="layui-tab-title">
+							<li class="layui-this">未读消息</li>
+							<li>已读消息</li>
+						</ul>
+						<div class="layui-tab-content">
+							<div class="layui-tab-item layui-show" id="messageIng">
+								<label v-for="messageIng in messageIngList">
+									<i class="layui-icon layui-icon-time"
+										style="font-size: 20px; color: #1E9FFF;"></i>Date：{{messageIng.messageDate.slice(0,16)}}&ensp;&ensp;
+									<i class="layui-icon layui-icon-username"
+										style="font-size: 20px; color: #1E9FFF;"></i>工厂方：{{messageIng.from_name}}&ensp;&ensp;
+									<i class="layui-icon layui-icon-read"
+										style="font-size: 20px; color: #1E9FFF;"></i>内容：{{messageIng.content}}&ensp;&ensp;&ensp;&ensp;
+									<button class="layui-btn layui-btn-sm" v-bind:id="messageIng.id"
+										v-on:click="messageRead(messageIng.id)">已读</button>
+									<hr class="layui-border-orange">
+								</label>
+								<br />
+							</div>
+							<div class="layui-tab-item" id="messageEd">
+								<label v-for="messageEd in messageEdList">
+									<i class="layui-icon layui-icon-time"
+										style="font-size: 20px; color: #1E9FFF;"></i>Date：{{messageEd.messageDate.slice(0,16)}}&ensp;&ensp;
+									<i class="layui-icon layui-icon-username"
+										style="font-size: 20px; color: #1E9FFF;"></i>工厂方：{{messageEd.from_name}}&ensp;&ensp;
+									<i class="layui-icon layui-icon-read"
+										style="font-size: 20px; color: #1E9FFF;"></i>内容：{{messageEd.content}}
+									&ensp;&ensp;&ensp;&ensp;
+									<hr class="layui-border-orange">
+								</label>
+								<br />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/PageJump.js"></script>
+<script>
+    
+	var params = paramsReady();
+	var fac_id = params.fac_id;
+	
+	
+	//设置导航网页fac_id
+	setFacId(fac_id);
+	//获得已读、未读消息
+	getMessageEd();
+	getMessageIng();
+
+	function getMessageIng() {
+		//获得未读消息
+		new Vue({
+			el: "#messageIng",
+			data() {
+				return {
+					messageIngList: null,
+				}
+			},
+			mounted() {
+				axios.post('http://localhost:8081/getMegByToId', 'fac_id=' + fac_id)
+						.then(response => (this.messageIngList = response['data']))
+						.catch(function(error) {
+							alert("获得未读信息出错");
+						});
+			},
+
+		});
+	}
+
+	function getMessageEd() {
+		//获得已读消息
+		new Vue({
+			el: "#messageEd",
+			data() {
+				return {
+					messageEdList: null,
+				}
+			},
+			mounted() {
+				axios.post('http://localhost:8081/getMegByToId2', 'fac_id=' + fac_id)
+						.then(response => (this.messageEdList = response['data']))
+						.catch(function(error) {
+							alert("获得已读信息出错");
+						});
+			},
+
+		});
+	}
+
+
+
+
+	layui.use('layer', function() {
+		var layer = layui.layer;
+
+	});
+
+	//将消息标记为已读
+	function messageRead(messageId) {
+
+		layer.confirm('是否进行已读', {
+			btn: ['Go', 'Back'], //按钮
+			title: "已读确认"
+		}, function(index) {
+			// Ajax修改pz
+			$.ajax({
+				url: "http://localhost:8081/editMessage",
+				type: 'post',
+				data: {
+					'messageId': messageId,
+				},
+				success: function(data) {
+					if (data === 0) {
+						layer.msg("已读状态出错");
+					} else {
+						layer.msg("已读状态成功");
+						getMessageEd();
+						getMessageIng();
+					}
+					document.getElementById(messageId).class = "layui-btn layui-btn-disabled layui-btn-sm";
+				},
+				error: function(error) {
+					layer.msg('"已读状态出错，请稍后再试！');
+				}
+			});
+			layer.close(index)
+		}, function() {
+			layer.msg('点了吧！');
+		});
+
+
+	}
+</script>

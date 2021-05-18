@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>司机审批页面</title>
+		<link rel="stylesheet" href="../css/layui.css">
+		<script src="../layui.js"></script>
+	</head>
+	<body style="padding-right: 120px;padding-left: 120px;background-color: whitesmoke">
+	
+		<!-- 内容主体区域 -->
+		<div style="padding: 15px;padding-right: 15px">
+			<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+				<legend>司机信息详情</legend>
+				<hr class="layui-border-orange">
+			</fieldset>
+		</div>
+	
+		<fieldset class="layui-elem-field  layui-border-blue" id="newField">
+			<legend id="newFileText">待注册司机信息</legend>
+			<div class="layui-field-boxS">
+				<form class="layui-form" style="color: #0C0C0C" id="driverMsg">
+					<div class="layui-form-item" align="center">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">司机姓名</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_name" disabled>
+							</div>
+						</div>
+	
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">性别</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_sex"
+									disabled>
+							</div>
+						</div>
+	
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">手机号码</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_phonenum"
+									disabled>
+							</div>
+						</div>
+	
+					</div>
+	
+					<div class="layui-form-item" align="center">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">登陆密码</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_password"
+									disabled>
+							</div>
+						</div>
+	
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">支付密码</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_pay_password"
+									disabled>
+							</div>
+						</div>
+	
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">身份证号码</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="driverMsgInfo.pcard_number"
+									disabled>
+							</div>
+						</div>
+					</div>
+					
+					<div class="layui-form-item" align="center">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">出生日期</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_birthdate.slice(0,10)"
+									disabled>
+							</div>
+						</div>
+						
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">行驶证领取日期</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="driverMsgInfo.dcard_validfrom.slice(0,10)"
+									disabled>
+							</div>
+						</div>
+						
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">行驶证年限</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="driverMsgInfo.dcard_validfor"
+									disabled>
+							</div>
+						</div>
+					</div>
+					
+					<div class="layui-form-item" align="center">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">车辆类型</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="driverMsgInfo.dcard_carclass"
+									disabled>
+							</div>
+						</div>
+						
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">车牌号码</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="driverMsgInfo.dcard_carnumber"
+									disabled>
+							</div>
+						</div>
+						
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 120px">cid</label>
+							<div class="layui-inline">
+								<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_cid"
+									disabled>
+							</div>
+						</div>
+					</div>
+	
+					<div class="layui-form-item" align="center">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 130px">法人身份证照片（正）：</label>
+							<img width="200px" height="200px" src="../photo/defaut.png" id="pcard_photoaddress1">
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 130px">法人身份证照片（反）：</label>
+							<img src="../photo/defaut.png" width="200px" height="200px" id="pcard_photoaddress2">
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 130px">行驶证照片：</label>
+							<img src="../photo/defaut.png" width="200px" height="200px" id="dcard_photo">
+						</div>
+						
+					</div>
+					
+					<div class="layui-form-item" style="padding-left: 52px;">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="width: 130px">车辆照片：</label>
+							<img src="../photo/defaut.png" width="200px" height="200px" id="dcard_carphoto" style="padding-left: 24px;">
+						</div>
+					</div>
+	
+					<div class="layui-form-item" id="newFileBtn">
+						<div class="layui-input-block" align="center">
+							<button type="button" class="layui-btn layui-btn-warm" id="LAY_layedit_code_submit"
+								v-on:click="newPass(driverMsgInfo.id)">通过</button>
+							<button type="button" class="layui-btn layui-btn-primary"
+								v-on:click="newRefuse(driverMsgInfo.id)">不通过</button>
+						</div>
+					</div>
+	
+				</form>
+			</div>
+		</fieldset>
+		
+		<fieldset class="layui-elem-field  layui-border-blue" id="editField">
+			<legend>待修改司机信息</legend>
+		
+		<div class="layui-field-boxS">
+			<form class="layui-form" style="color: #0C0C0C" id="driverMsg2">
+				<div class="layui-form-item" align="center">
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 120px">司机姓名</label>
+						<div class="layui-inline">
+							<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_name" disabled>
+						</div>
+					</div>
+			
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 120px">性别</label>
+						<div class="layui-inline">
+							<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_sex"
+								disabled>
+						</div>
+					</div>
+			
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 120px">手机号码</label>
+						<div class="layui-inline">
+							<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_phonenum"
+								disabled>
+						</div>
+					</div>
+			
+				</div>
+			
+				<div class="layui-form-item" align="center">
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 120px">登陆密码</label>
+						<div class="layui-inline">
+							<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_password"
+								disabled>
+						</div>
+					</div>
+			
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 120px">支付密码</label>
+						<div class="layui-inline">
+							<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_pay_password"
+								disabled>
+						</div>
+					</div>
+			
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 120px">身份证号码</label>
+						<div class="layui-inline">
+							<input type="text" class="layui-input" v-bind:value="driverMsgInfo.pcard_number"
+								disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-form-item" align="center">
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 120px">出生日期</label>
+						<div class="layui-inline">
+							<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_birthdate.slice(0,10)"
+								disabled>
+						</div>
+					</div>
+					
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 120px">行驶证领取日期</label>
+						<div class="layui-inline">
+							<input type="text" class="layui-input" v-bind:value="driverMsgInfo.dcard_validfrom.slice(0,10)"
+								disabled>
+						</div>
+					</div>
+					
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 120px">行驶证年限</label>
+						<div class="layui-inline">
+							<input type="text" class="layui-input" v-bind:value="driverMsgInfo.dcard_validfor"
+								disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-form-item" align="center">
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 120px">车辆类型</label>
+						<div class="layui-inline">
+							<input type="text" class="layui-input" v-bind:value="driverMsgInfo.dcard_carclass"
+								disabled>
+						</div>
+					</div>
+					
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 120px">车牌号码</label>
+						<div class="layui-inline">
+							<input type="text" class="layui-input" v-bind:value="driverMsgInfo.dcard_carnumber"
+								disabled>
+						</div>
+					</div>
+					
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 120px">cid</label>
+						<div class="layui-inline">
+							<input type="text" class="layui-input" v-bind:value="driverMsgInfo.d_cid"
+								disabled>
+						</div>
+					</div>
+				</div>
+			
+				<div class="layui-form-item" align="center">
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 130px">法人身份证照片（正）：</label>
+						<img width="200px" height="200px" src="../photo/defaut.png" id="pcard_photoaddress1_edit">
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 130px">法人身份证照片（反）：</label>
+						<img src="../photo/defaut.png" width="200px" height="200px" id="pcard_photoaddress2_edit">
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 130px">行驶证照片：</label>
+						<img src="../photo/defaut.png" width="200px" height="200px" id="dcard_photo_edit">
+					</div>
+					
+				</div>
+				
+				<div class="layui-form-item" style="padding-left: 52px;">
+					<div class="layui-inline">
+						<label class="layui-form-label" style="width: 130px">车辆照片：</label>
+						<img src="../photo/defaut.png" width="200px" height="200px" id="dcard_carphoto_edit" style="padding-left: 24px;">
+					</div>
+				</div>
+			
+				<div class="layui-form-item" id="newFileBtn">
+					<div class="layui-input-block" align="center">
+						<button type="button" class="layui-btn layui-btn-warm"
+							v-on:click="editPass(driverMsgInfo.id)">通过</button>
+						<button type="button" class="layui-btn layui-btn-primary"
+							v-on:click="editRefuse(driverMsgInfo.id)">不通过</button>
+					</div>
+				</div>
+			
+			</form>
+		</div>
+		
+		</fieldset>
+	</body>
+</html>
+<script src="../js/PageJump.js"></script>
+<script src="../js/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script>
+	
+	var params = paramsReady();
+	var d_id = params.d_id;
+	var if_new = params.if_new;
+	
+	layui.use('layer',function () {
+	    var layer = layui.layer;
+	})
+	
+	if (if_new === "true"){
+	    document.getElementById("editField").style.display = "none";
+	    dataReady_new(d_id);
+	}else {
+		document.getElementById("newFileBtn").style.display = "none";
+		document.getElementById("newFileText").innerHTML = "原司机信息";
+		dataReady_new(d_id);
+	    dataReady_edit(d_id);
+	}
+	
+function dataReady_new(d_id){
+		new Vue({
+			el: '#driverMsg',
+			data() {
+				return {
+					driverMsgInfo: null,
+				}
+			},
+			mounted() {
+				axios.post('http://localhost:8081/getDriverMsg', 'd_id=' + d_id)
+					.then(response => (this.driverMsgInfo = response['data']))
+					.catch(function(error) {
+						alert("获得司机信息出错");
+					});
+			},
+			watch: {
+				driverMsgInfo: function() {
+					this.$nextTick(function() {
+						document.getElementById('pcard_photoaddress1').src =
+							"http://localhost:8081/static/" + this.driverMsgInfo.pcard_photoaddress1;
+						document.getElementById('pcard_photoaddress2').src =
+							"http://localhost:8081/static/" + this.driverMsgInfo.pcard_photoaddress2;
+						document.getElementById('dcard_photo').src =
+							"http://localhost:8081/static/" + this.driverMsgInfo.dcard_photo;
+						document.getElementById('dcard_carphoto').src =
+							"http://localhost:8081/static/" + this.driverMsgInfo.dcard_carphoto;
+					});
+				}
+			},
+		});
+		
+	}
+	
+function dataReady_edit(d_id){
+		
+		new Vue({
+			el: '#driverMsg2',
+			data() {
+				return {
+					driverMsgInfo: null,
+				}
+			},
+			mounted() {
+				axios.post('http://localhost:8081/getDriverMsg', 'd_id=' + d_id)
+					.then(response => (this.driverMsgInfo = response['data']))
+					.catch(function(error) {
+						alert("获得司机信息出错");
+					});
+			},
+			watch: {
+				driverMsgInfo: function() {
+					this.$nextTick(function() {
+						document.getElementById('pcard_photoaddress1_edit').src =
+							"http://localhost:8081/static/" + this.driverMsgInfo.pcard_photoaddress1;
+						document.getElementById('pcard_photoaddress2_edit').src =
+							"http://localhost:8081/static/" + this.driverMsgInfo.pcard_photoaddress2;
+						document.getElementById('dcard_photo_edit').src =
+							"http://localhost:8081/static/" + this.driverMsgInfo.dcard_photo;
+						document.getElementById('dcard_carphoto_edit').src =
+							"http://localhost:8081/static/" + this.driverMsgInfo.dcard_carphoto;
+					});
+				}
+			},
+		});
+		
+	}
+	
+	/**
+	 * @param {int} d_id：司机id
+	 * 通过司机注册审核
+	 */
+	function newPass(d_id){
+		
+		layer.confirm("是否确认通过",function (index) {
+		    $.ajax({
+		        url: "http://localhost:8081/passNewDriver",
+		        type: 'post',
+		        data: {
+		            'd_id':d_id,
+		        },
+		        success: function(data) {
+		            console.log(data);
+		            if (data == 1) {
+		                layer.msg("通过成功!");
+		            } else if(data === -1){
+						layer.msg("已操作!请勿重复进行");
+					}else {
+		                layer.msg("通过失败!");
+		            }
+		        },
+		        error: function(error) {
+		            layer.msg('"通过申请出错，请稍后再试！');
+		        }
+		    });
+		
+		    layer.close(index);
+		
+		});
+		
+	}
+	/**
+	 * @param {int} d_id：司机id
+	 * 拒绝司机注册审核
+	 */
+	function newRefuse(d_id){
+		layer.confirm("是否确认不通过",function (index) {
+		    $.ajax({
+		        url: "http://localhost:8081/refuseNewDriver",
+		        type: 'post',
+		        data: {
+		            'd_id':d_id,
+		        },
+		        success: function(data) {
+		            console.log(data);
+		            if (data == 1) {
+		                layer.msg("拒绝申请成功!");
+		            } else if(data === -1){
+						layer.msg("已操作!请勿重复进行");
+					}else {
+		                layer.msg("拒绝申请失败!");
+		            }
+		        },
+		        error: function(error) {
+		            layer.msg('"拒绝申请出错，请稍后再试！');
+		        }
+		    });
+		
+		    layer.close(index);
+		});
+		
+	}
+	
+</script>

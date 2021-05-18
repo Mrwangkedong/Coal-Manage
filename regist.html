@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>厂家注册</title>
+  <link rel="stylesheet" href="layui/css/layui.css">
+</head>
+<body  style="padding-right: 120px;padding-left: 120px;background-color: whitesmoke">
+
+<!-- 内容主体区域 -->
+<div style="padding: 15px;padding-right: 15px">
+  <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    <legend>厂家注册</legend>
+    <hr class="layui-border-orange">
+  </fieldset>
+
+  <fieldset class="layui-elem-field  layui-border-blue" >
+    <div class="layui-field-boxS" id="facOrderInfo">
+
+      <form class="layui-form" lay-filter="FacMsgAdd" style="color: #0C0C0C">
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">工厂名称</label>
+            <div class="layui-inline">
+              <input type="text" class="layui-input" name="facName">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">工厂法人姓名</label>
+            <div class="layui-inline">
+              <input type="text" class="layui-input" name="factory_lpname">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">工厂法人身份证</label>
+            <div class="layui-inline">
+              <input type="text" class="layui-input"  name="factory_lpcardnum">
+            </div>
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+
+          <div class="layui-inline" >
+            <label class="layui-form-label">位置经度</label>
+            <div class="layui-inline">
+              <input type="text" class="layui-input" value="" name="factory_longitude" id="factory_longitude" >
+            </div>
+          </div>
+
+          <div class="layui-inline">
+            <label class="layui-form-label">位置纬度</label>
+            <div class="layui-inline">
+              <input type="text" class="layui-input" value="" name="factory_latitude" id="factory_latitude">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">工厂地址</label>
+            <div class="layui-inline">
+              <input type="text" class="layui-input" value="" name="factory_address" id="factory_address">
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item" id="facImgs">
+          <div class="layui-inline">
+            <label class="layui-form-label"><span style="color: red">*</span>工厂营业资格证上传</label>
+            <div class="layui-inline">
+              <input type="file" class="layui-input" name="facImg" width="50px">
+            </div>
+          </div>
+          <div class="layui-inline" >
+            <label class="layui-form-label"><span style="color: red">*</span>法人身份证（正）上传</label>
+            <div class="layui-inline">
+              <input type="file" class="layui-input" name="facImg" width="50px">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label"><span style="color: red">*</span>法人身份证（反）上传</label>
+            <div class="layui-inline">
+              <input type="file" class="layui-input" name="facImg" width="50px">
+            </div>
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">管理员姓名</label>
+            <div class="layui-inline">
+              <input type="text" class="layui-input" value="" name="manage_name" >
+            </div>
+          </div>
+
+          <div class="layui-inline">
+            <label class="layui-form-label">管理员手机号</label>
+            <div class="layui-inline">
+              <input type="text" class="layui-input" value="" name="manage_phoneNum" >
+            </div>
+          </div>
+
+          <div class="layui-inline">
+            <label class="layui-form-label">管理员登录密码</label>
+            <div class="layui-inline">
+              <input type="password" class="layui-input" value="" name="manage_password" >
+            </div>
+          </div>
+
+        </div>
+
+        <div class="layui-form-item layui-col-lg-offset3">
+          <div class="layui-input-block">
+            <button type="button" class="layui-btn"  onclick="getAddress()">获得工厂经纬度</button>
+            <button type="button" class="layui-btn layui-btn-warm" id="LAY_layedit_code_submit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary" id="LAY_layedit_code_reset">重置</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </fieldset>
+
+
+</div>
+
+
+<!-- 引入 layui.js 的 <script> 标签最好放置在 html 末尾 -->
+<script src="layui/layui.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=fCP53ZyuQkjn4XVYM2qZNRYGI3s1kmYT"></script>
+<script src="layui/js/jquery-3.4.1.min.js"></script>
+</body>
+</html>
+<script>
+
+  layui.use(['upload','form'], function() {
+    var form = layui.form;
+    var layer = layui.layer;
+
+    //表单取值
+    layui.$('#LAY_layedit_code_submit').on('click', function(){
+      var data = form.val('FacMsgAdd');
+      alert(JSON.stringify(data));
+
+      //1、从零开始创建FormData对象 手动注入
+      var formData = jsToFormData(data);     //将json转化为FormData()
+      //注入 name=file
+      var files = $("#facImgs input[type='file']");
+      for (var i = 0; i < files.length; i++) {
+        //注意：这里append进去的是File对象，而不是FileList对象
+        formData.append("facImg", files[i].files[0]);
+      }
+
+
+      //调用ajax进行添加
+      $.ajax({
+        url:"http://localhost:8081/addNewFactory",
+        type:'post',
+        data: formData,
+        processData: false,
+        contentType: false,
+        beforeSend:function(){
+
+        },
+        success:function (data) {
+          if (data === 1){
+            layer.msg("申请成功，请等待审批");
+            document.getElementById("LAY_layedit_code_reset").click();
+          }else {
+            if (data === 2){
+              layer.msg("申请失败，已存在相同工厂名称，工厂法人");
+            }else {
+              layer.msg("申请失败，请注意信息准确性");
+            }
+          }
+        },
+        error:function (error) {
+          layer.msg("申请失败，请注意信息完整性/文件大小，文件总大小小于1M");
+        }
+      });
+    //  ajax
+    });
+
+
+  });
+
+  //对象转formdata格式
+  function jsToFormData(config) {
+    const formData = new FormData();
+    //循环传入的值转换formData
+    Object.keys(config).forEach((key) => {
+      formData.append(key, config[key]);
+    });
+    return formData;
+  }
+
+
+  //获得经纬度
+  function getAddress(){
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+              function (position) {
+                document.getElementById("factory_longitude").value=position.coords.longitude;
+                document.getElementById("factory_latitude").value=position.coords.latitude;
+                //获得具体位置信息
+                var map = new BMap.Map("allmap");
+                var point = new BMap.Point(position.coords.longitude,position.coords.latitude);
+                var gc = new BMap.Geocoder();
+                gc.getLocation(point, function(rs){
+                  var addComp = rs.addressComponents;
+                  var address = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+                  document.getElementById("factory_address").value=address;
+                });
+              },
+              function (e) {
+                throw(e.message);
+              }
+      )
+    }
+  }
+</script>
