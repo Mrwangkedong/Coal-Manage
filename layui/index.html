@@ -152,8 +152,9 @@
                                    <div class="layui-inline">
                                        <label class="layui-form-label">目标工厂</label>
                                        <div class="layui-input-inline" id="facNameList" >
-                                           <select lay-verify="required" lay-search="" name="ft_id">
-                                              <option v-bind:value="key+1" v-for="(value, key) in facNames">{{value}}</option>
+                                           <select lay-verify="required" lay-search="" name="ft_id" id="facNames">
+<!--                                              <option v-bind:value="key+1" v-for="(value, key) in facNames">{{value}}</option>-->
+                                               <option v-for="facName in facNames" v-bind:value="facName.fac_id">{{facName.fac_name}}</option>
                                            </select>
                                        </div>
                                    </div>
@@ -264,11 +265,14 @@
         watch:{
             facNames:function () {
                 this.$nextTick(function () {
-                    console.log(this.facNames)
+                    for (let facName in this.facNames) {
+                        console.log(facName.fac_id);
+                    }
                 })
             }
         }
     });
+
 
 
 
