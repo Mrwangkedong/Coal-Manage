@@ -162,7 +162,7 @@
                                    <div class="layui-inline">
                                        <label class="layui-form-label">车辆类型</label>
                                        <div class="layui-input-inline">
-                                           <select lay-verify="" name="carClass">
+                                           <select lay-verify="" name="carClass" id="carClass">
                                                <option value="1">半挂(80)</option>
                                                <option value="2">前四后八(45)</option>
                                            </select>
@@ -180,16 +180,16 @@
                                    </div>
 
                                    <div class="layui-inline">
-                                       <label class="layui-form-label">目标车辆数</label>
+                                       <label class="layui-form-label">目标货物重量（吨）</label>
                                        <div class="layui-inline">
-                                           <input type="text" class="layui-input" placeholder="请输入目标车辆数" name="targetCarNum">
+                                           <input type="text" class="layui-input" placeholder="请输入目标货物重量" name="targetGoodNum" id="targetGoodNum">
                                        </div>
                                    </div>
 
                                    <div class="layui-inline">
-                                       <label class="layui-form-label">目标货物重量（吨）</label>
+                                       <label class="layui-form-label">目标车辆数</label>
                                        <div class="layui-inline">
-                                           <input type="text" class="layui-input" placeholder="请输入目标货物重量" name="targetGoodNum">
+                                           <input type="text" class="layui-input" placeholder="请输入目标车辆数" name="targetCarNum" id="targetCarNum">
                                        </div>
                                    </div>
 
@@ -259,6 +259,7 @@
         });
     }
 
+    //添加工厂名称
     function addNames(){
         $("#facNames").prepend("<option value='0'>请选择</option>");
         $.ajax({
@@ -278,12 +279,23 @@
                 alert('添加工厂名出错');
             }
         });
-
-
-
     }
 
-
+    //检测目标吨数，自动填入目标车辆数
+    document.getElementById("targetGoodNum").addEventListener('change',function (message){
+        let targetGoodNum = Number(document.getElementById("targetGoodNum").value);
+        let CarClass = Number($("#carClass").val());
+        console.log("目标吨数&&目标车辆",targetGoodNum, CarClass);
+        if (CarClass === 1 && targetGoodNum % 80 !== 0){
+            $("#targetCarNum").val(parseInt(targetGoodNum / 80) + 1);
+        }else if(CarClass === 1 && targetGoodNum % 80 === 0){
+            $("#targetCarNum").val((targetGoodNum / 80));
+        }else if(CarClass === 2 && targetGoodNum % 45 !== 0){
+            $("#targetCarNum").val(parseInt(targetGoodNum / 45)+1);
+        }else{
+            $("#targetCarNum").val(targetGoodNum / 45 );
+        }
+    });
 
 
 
