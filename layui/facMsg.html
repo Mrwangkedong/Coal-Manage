@@ -98,7 +98,7 @@
                                     <label class="layui-form-label">所属工厂</label>
                                     <div class="layui-inline">
 <!--                                        标签id存储该工厂id-->
-                                        <input type="text" class="layui-input" name="staffFacName" value="大秀山" disabled>
+                                        <input type="text" class="layui-input" name="staffFacName" id="staffFacName" disabled>
                                     </div>
                                 </div>
 
@@ -430,7 +430,7 @@
 			}
 		},
 		mounted() {
-			axios.post('http://localhost:8081/getFacMsg', "fac_id=" + 1)
+			axios.post('http://localhost:8081/getFacMsg', "fac_id=" + fac_id)
 				.then(response => (this.facMsgInfo = response['data']))
 				.catch(function(error) {
 					alert("获得工厂信息出错");
@@ -439,6 +439,7 @@
 		watch: {
 			facMsgInfo:function(){
 				this.$nextTick(function(){
+					document.getElementById("staffFacName").value = this.facMsgInfo.name;
 					document.getElementById('factory_lpcardphoto1').src = "http://localhost:8081/static/"+this.facMsgInfo.factory_lpcardphoto1;
 					document.getElementById('factory_lpcardphoto2').src = "http://localhost:8081/static/"+this.facMsgInfo.factory_lpcardphoto2;
 					document.getElementById('factory_licencephoto').src = "http://localhost:8081/static/"+this.facMsgInfo.factory_licencephoto;
@@ -457,7 +458,7 @@
         //表单取值
         layui.$('#LAY-component-form-getval').on('click', function() {
             var data = form.val('staffNew');
-            data['staff_factoryID'] = 1;  //添加工厂id
+            data['staff_factoryID'] = fac_id;  //添加工厂id
             alert(JSON.stringify(data));
 
             //调用ajax进行添加
@@ -465,9 +466,6 @@
                 url:"http://localhost:8081/addNewStaff",
                 type:'post',
                 data:data,
-                beforeSend:function(){
-
-                },
                 success:function (data) {
                     console.log(data);
                     if (data === 1){
@@ -534,7 +532,7 @@
                 elem: '#facStaff'
                 ,url:'http://localhost:8081/getAllStaff'
                 ,title:"工厂员工ALL"
-                ,where:{fac_id:1}
+                ,where:{fac_id:fac_id}
                 ,method:'post'
                 ,parseData:function (res) {
                     return {

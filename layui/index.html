@@ -154,7 +154,7 @@
                                        <div class="layui-input-inline" id="facNameList" >
                                            <select lay-verify="required" lay-search="" name="ft_id" id="facNames">
 <!--                                              <option v-bind:value="key+1" v-for="(value, key) in facNames">{{value}}</option>-->
-                                               <option v-for="facName in facNames" v-bind:value="facName.fac_id">{{facName.fac_name}}</option>
+<!--                                               <option v-for="facName in facNames" v-bind:value="facName.fac_id">{{facName.fac_name}}</option>-->
                                            </select>
                                        </div>
                                    </div>
@@ -163,8 +163,8 @@
                                        <label class="layui-form-label">车辆类型</label>
                                        <div class="layui-input-inline">
                                            <select lay-verify="" name="carClass">
-                                               <option value="1">半挂</option>
-                                               <option value="2">前四后八</option>
+                                               <option value="1">半挂(80)</option>
+                                               <option value="2">前四后八(45)</option>
                                            </select>
                                        </div>
                                    </div>
@@ -242,36 +242,46 @@
 	var fac_id = params.fac_id;
 	
 	
+	addNames();
+	
 	//设置导航网页fac_id
 	setFacId(fac_id);
 	
     //获得当前工厂名称
     getFacName(fac_id);
     //获得全部工厂名称
-    new Vue({
-        el:'#facNameList',
-        data(){
-            return{
-                facNames:null,
-            }
-        },
-        mounted(){
-            axios.get('http://localhost:8081/getFacNames')
-                .then(response => (this.facNames = response['data']))
-                .catch(function(error) {
-                    alert("获得工厂名称信息出错");
-                });
-        },
-        watch:{
-            facNames:function () {
-                this.$nextTick(function () {
-                    for (let facName in this.facNames) {
-                        console.log(facName.fac_id);
+
+    //重新渲染表单
+    function renderForm(){
+        layui.use('form', function(){
+            var form = layui.form;//高版本建议把括号去掉，有的低版本，需要加()
+            form.render();
+        });
+    }
+
+    function addNames(){
+        $("#facNames").prepend("<option value='0'>请选择</option>");
+        $.ajax({
+            url: "http://localhost:8081/getFacNames",
+            type: 'get',
+            success: function(data) {
+                if (data != null){
+                    for (let i = 0; i < data.length; i++) {
+                        console.log("<option value='"+data[i].fac_id+"'>"+data[i].fac_name+"</option>");
+                        $("#facNames").append("<option value='"+data[i].fac_id+"'>"+data[i].fac_name+"</option>");
                     }
-                })
+                }
+
+                renderForm();//表单重新渲染，要不然添加完显示不出来新的option
+            },
+            error: function(error) {
+                alert('添加工厂名出错');
             }
-        }
-    });
+        });
+
+
+
+    }
 
 
 
