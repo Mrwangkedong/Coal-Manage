@@ -64,7 +64,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label" style="width: 120px">订单完成车辆数</label>
                     <div class="layui-inline">
-                        <input type="number" class="layui-input"  value="100" disabled>
+                        <input type="number" class="layui-input"  v-bind:value="facOrderInfo.facOrderInfo.order_actualcarnum2" disabled>
                     </div>
                 </div>
 
@@ -88,7 +88,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label" style="width: 120px">订单完成货物重量</label>
                     <div class="layui-inline">
-                        <input type="number" class="layui-input"  value="200" disabled>
+                        <input type="number" class="layui-input"  v-bind:value="facOrderInfo.facOrderInfo.order_actualweight2" disabled>
                     </div>
                 </div>
             </div>

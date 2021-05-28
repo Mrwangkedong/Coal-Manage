@@ -321,7 +321,8 @@
 	var params = paramsReady();
 	console.log(params)
 	var fac_id = params.fac_id;
-	
+
+
 	
 	//设置导航网页fac_id
 	setFacId(fac_id);
@@ -331,7 +332,7 @@
         var upload = layui.upload;
         var form = layui.form;
         var layer = layui.layer;
-
+        form.render();
 
         //表单取值
         layui.$('#LAY_layedit_code_submit').on('click', function(){
@@ -474,8 +475,10 @@
                         staffDataReady();
                         //进行重置
                         document.getElementById('form-reset').click();
-                    }else {
+                    }else if(data === 0){
                         layer.msg("添加失败!");
+                    }else {
+                        layer.msg("手机号码已被注册");
                     }
                 },
                 error:function (error) {
